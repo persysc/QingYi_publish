@@ -25,21 +25,26 @@
 
 ## 在线更新
 
-接入本仓库更新源的清弈版本，可在软件内检查并下载更新。客户端优先使用 GH-Proxy 加速，失败后尝试 GitHub 直连，并在下载后校验文件 MD5。
+接入本仓库更新源的清弈版本，可在软件内检查并下载更新。客户端读取 `update.txt`，比较远端 MD5 与当前主程序的 MD5；不同时提示更新。下载优先使用 GH-Proxy 加速，失败后尝试 GitHub 直连，下载完成后再次校验 MD5。
 
 每个用于在线更新的正式 Release 包含以下附件：
 
 | 附件 | 用途 |
 | --- | --- |
-| 清弈主程序 `.exe` | 由软件内的更新流程下载，用于替换主程序 |
-| `update.txt` | 记录该 EXE 的 MD5、软件版本号和下载地址 |
+| `qingyi.exe` | 清弈主程序，由软件内的更新流程下载，用于替换主程序 |
+| `update.txt` | 只包含该 EXE 的 32 位 MD5 |
 | 完整软件包（如提供） | 用于首次安装或需要同步更新运行资源的版本 |
 
-`update.txt` 使用 UTF-8 编码，内容为一行：
+`update.txt` 使用 UTF-8 编码，只写 EXE 的 32 位 MD5，不附加版本号或下载地址。两个附件都上传完成后，再正式发布并将该 Release 设为 Latest，附件名始终保持不变。
+
+客户端使用固定地址获取最新附件：
 
 ```text
-MD5||版本号||GitHub原始EXE下载地址
+https://github.com/persysc/QingYi_publish/releases/latest/download/update.txt
+https://github.com/persysc/QingYi_publish/releases/latest/download/qingyi.exe
 ```
+
+检测只比较文件内容，不判断版本高低，因此请将 Latest 指向希望用户使用的正式版本。
 
 旧版若仍使用已经失效的更新源，需要先手动安装一次接入新更新源的版本。
 
